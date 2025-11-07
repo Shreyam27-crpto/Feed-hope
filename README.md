@@ -1,294 +1,134 @@
-# Feed Hope - Community Food Relief & Management System
+<p align="center">
+  <a href="https://gulpjs.com">
+    <img height="257" width="114" src="https://raw.githubusercontent.com/gulpjs/artwork/master/gulp-2x.png">
+  </a>
+</p>
 
-A full-stack web application connecting donors, volunteers, and NGOs to reduce food waste and feed the needy.
+# glob-parent
 
-## 🌟 Features
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][ci-image]][ci-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
-- **Role-based Authentication**: Donors, Volunteers, and Admin/NGO roles
-- **Food Donation System**: Submit food donations with pickup location using Google Maps
-- **Monetary Donations**: Secure payment integration with Razorpay
-- **Volunteer Management**: Track volunteer hours, points, and assigned donations
-- **Admin Dashboard**: Comprehensive analytics, user management, and donation tracking
-- **Community Page**: Blog posts, testimonials, gallery, and newsletter subscription
-- **Contact System**: Contact form with Google Maps integration
-- **Dark Mode**: Toggle between light and dark themes
-- **Responsive Design**: Mobile-friendly interface
+Extract the non-magic parent path from a glob string.
 
-## 🛠️ Tech Stack
+## Usage
 
-### Frontend
-- React 18 with TypeScript
-- React Router for navigation
-- Tailwind CSS for styling
-- Chart.js for analytics visualization
-- Google Maps API for location services
-- Axios for API calls
+```js
+var globParent = require('glob-parent');
 
-### Backend
-- Node.js with Express.js
-- MongoDB with Mongoose
-- JWT for authentication
-- Bcrypt for password hashing
-- Razorpay for payments
-- Nodemailer for email notifications
-- Cloudinary for image uploads (optional)
+globParent('path/to/*.js'); // 'path/to'
+globParent('/root/path/to/*.js'); // '/root/path/to'
+globParent('/*.js'); // '/'
+globParent('*.js'); // '.'
+globParent('**/*.js'); // '.'
+globParent('path/{to,from}'); // 'path'
+globParent('path/!(to|from)'); // 'path'
+globParent('path/?(to|from)'); // 'path'
+globParent('path/+(to|from)'); // 'path'
+globParent('path/*(to|from)'); // 'path'
+globParent('path/@(to|from)'); // 'path'
+globParent('path/**/*'); // 'path'
 
-## 📋 Prerequisites
-
-- Node.js (v16 or higher)
-- MongoDB (local or MongoDB Atlas)
-- Google Maps API Key
-- Razorpay Account (for payments)
-- Email account for SMTP (Gmail recommended)
-
-## 🚀 Installation
-
-1. **Clone the repository**
-   ```bash
-   cd "Mini Project"
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   
-   Create a `.env` file in the root directory:
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/foodrelief
-   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-   RAZORPAY_KEY_ID=your-razorpay-key-id
-   RAZORPAY_KEY_SECRET=your-razorpay-key-secret
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your-email@gmail.com
-   SMTP_PASS=your-app-password
-   CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
-   CLOUDINARY_API_KEY=your-cloudinary-api-key
-   CLOUDINARY_API_SECRET=your-cloudinary-api-secret
-   GOOGLE_MAPS_API_KEY=your-google-maps-api-key
-   ```
-
-   Create a `.env` file in the root for frontend (or use Vite env variables):
-   ```env
-   VITE_API_URL=http://localhost:5000/api
-   VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
-   VITE_RAZORPAY_KEY_ID=your-razorpay-key-id
-   ```
-
-4. **Start MongoDB**
-   
-   If using local MongoDB:
-   ```bash
-   mongod
-   ```
-   
-   Or use MongoDB Atlas and update `MONGODB_URI` in `.env`
-
-5. **Start the backend server**
-   ```bash
-   npm run dev:server
-   ```
-   
-   Or for production:
-   ```bash
-   npm run server
-   ```
-
-6. **Start the frontend development server** (in a new terminal)
-   ```bash
-   npm run dev
-   ```
-
-7. **Access the application**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:5000
-
-## 📁 Project Structure
-
-```
-Mini Project/
-├── server/
-│   ├── index.js              # Express server entry point
-│   ├── models/              # MongoDB models
-│   │   ├── User.js
-│   │   ├── FoodDonation.js
-│   │   ├── MonetaryDonation.js
-│   │   ├── Contact.js
-│   │   └── Community.js
-│   ├── routes/              # API routes
-│   │   ├── auth.js
-│   │   ├── donations.js
-│   │   ├── volunteers.js
-│   │   ├── admin.js
-│   │   ├── contact.js
-│   │   ├── community.js
-│   │   └── payment.js
-│   ├── middleware/          # Custom middleware
-│   │   └── auth.js
-│   └── utils/               # Utility functions
-│       └── email.js
-├── src/
-│   ├── components/          # React components
-│   │   ├── Navbar.tsx
-│   │   └── Footer.tsx
-│   ├── pages/               # Page components
-│   │   ├── Home.tsx
-│   │   ├── Login.tsx
-│   │   ├── Register.tsx
-│   │   ├── DonorDashboard.tsx
-│   │   ├── VolunteerDashboard.tsx
-│   │   ├── AdminDashboard.tsx
-│   │   ├── DonateMoney.tsx
-│   │   ├── Community.tsx
-│   │   └── Contact.tsx
-│   ├── context/             # React context
-│   │   └── AuthContext.tsx
-│   ├── utils/               # Utility functions
-│   │   └── api.ts
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── package.json
-└── README.md
+// if provided a non-glob path, returns the nearest dir
+globParent('path/foo/bar.js'); // 'path/foo'
+globParent('path/foo/'); // 'path/foo'
+globParent('path/foo'); // 'path' (see issue #3 for details)
 ```
 
-## 🔐 User Roles
+## API
 
-1. **Donor**: Can submit food donations and make monetary donations
-2. **Volunteer**: Can view assigned donations and update their status
-3. **Admin/NGO**: Full access to manage users, donations, and view analytics
+### `globParent(maybeGlobString, [options])`
 
-## 🎨 Features Overview
+Takes a string and returns the part of the path before the glob begins. Be aware of Escaping rules and Limitations below.
 
-### Home Page
-- Hero section with call-to-action
-- Impact counters (meals, donors, volunteers, food saved)
-- Mission statement
-- Quick access buttons
+#### options
 
-### Authentication
-- Role-based registration
-- JWT-based login
-- Protected routes
-- Profile management
+```js
+{
+  // Disables the automatic conversion of slashes for Windows
+  flipBackslashes: true;
+}
+```
 
-### Donor Dashboard
-- Submit food donations with Google Maps location picker
-- View donation status
-- Track donation history
+## Escaping
 
-### Volunteer Dashboard
-- View assigned donations
-- Update donation status (picked up, delivered)
-- Track volunteer hours and points
+The following characters have special significance in glob patterns and must be escaped if you want them to be treated as regular path characters:
 
-### Admin Dashboard
-- Analytics with charts
-- Manage all users
-- Approve/reject donations
-- View comprehensive statistics
+- `?` (question mark) unless used as a path segment alone
+- `*` (asterisk)
+- `|` (pipe)
+- `(` (opening parenthesis)
+- `)` (closing parenthesis)
+- `{` (opening curly brace)
+- `}` (closing curly brace)
+- `[` (opening bracket)
+- `]` (closing bracket)
 
-### Monetary Donations
-- Razorpay integration
-- One-time and recurring donations
-- Email receipts
+**Example**
 
-### Community Page
-- Blog posts (admin can create)
-- Testimonials
-- Gallery
-- Newsletter subscription
+```js
+globParent('foo/[bar]/'); // 'foo'
+globParent('foo/\\[bar]/'); // 'foo/[bar]'
+```
 
-### Contact Page
-- Contact form
-- Google Maps showing location
-- Contact information
+## Limitations
 
-## 🔧 Configuration
+### Braces & Brackets
 
-### Google Maps API
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project
-3. Enable Maps JavaScript API
-4. Create API key and add to `.env`
+This library attempts a quick and imperfect method of determining which path
+parts have glob magic without fully parsing/lexing the pattern. There are some
+advanced use cases that can trip it up, such as nested braces where the outer
+pair is escaped and the inner one contains a path separator. If you find
+yourself in the unlikely circumstance of being affected by this or need to
+ensure higher-fidelity glob handling in your library, it is recommended that you
+pre-process your input with [expand-braces] and/or [expand-brackets].
 
-### Razorpay Setup
-1. Sign up at [Razorpay](https://razorpay.com/)
-2. Get your Key ID and Key Secret from dashboard
-3. Add to `.env` file
+### Windows
 
-### Email Configuration (Gmail)
-1. Enable 2-factor authentication
-2. Generate App Password
-3. Use App Password in `SMTP_PASS`
+Backslashes are not valid path separators for globs. If a path with backslashes
+is provided anyway, for simple cases, glob-parent will replace the path
+separator for you and return the non-glob parent path (now with
+forward-slashes, which are still valid as Windows path separators).
 
-## 🚀 Deployment
+This cannot be used in conjunction with escape characters.
 
-### Backend Deployment (Heroku/Railway/Render)
-1. Set environment variables in your hosting platform
-2. Update `MONGODB_URI` to use MongoDB Atlas
-3. Deploy the server folder
+```js
+// BAD
+globParent('C:\\Program Files \\(x86\\)\\*.ext'); // 'C:/Program Files /(x86/)'
 
-### Frontend Deployment (Vercel/Netlify)
-1. Build the frontend: `npm run build`
-2. Deploy the `dist` folder
-3. Set environment variables in hosting platform
+// GOOD
+globParent('C:/Program Files\\(x86\\)/*.ext'); // 'C:/Program Files (x86)'
+```
 
-## 📝 API Endpoints
+If you are using escape characters for a pattern without path parts (i.e.
+relative to `cwd`), prefix with `./` to avoid confusing glob-parent.
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update profile
+```js
+// BAD
+globParent('foo \\[bar]'); // 'foo '
+globParent('foo \\[bar]*'); // 'foo '
 
-### Donations
-- `POST /api/donations/food` - Create food donation
-- `GET /api/donations/food` - Get all donations
-- `GET /api/donations/food/:id` - Get single donation
-- `PUT /api/donations/food/:id/status` - Update donation status
+// GOOD
+globParent('./foo \\[bar]'); // 'foo [bar]'
+globParent('./foo \\[bar]*'); // '.'
+```
 
-### Volunteers
-- `GET /api/volunteers/dashboard` - Get volunteer dashboard
-- `GET /api/volunteers/available-donations` - Get available donations
+## License
 
-### Admin
-- `GET /api/admin/dashboard` - Get admin dashboard
-- `GET /api/admin/users` - Get all users
-- `PUT /api/admin/users/:id` - Update user
+ISC
 
-### Payment
-- `POST /api/payment/create-order` - Create payment order
-- `POST /api/payment/verify` - Verify payment
+<!-- prettier-ignore-start -->
+[downloads-image]: https://img.shields.io/npm/dm/glob-parent.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/glob-parent
+[npm-image]: https://img.shields.io/npm/v/glob-parent.svg?style=flat-square
 
-## 🤝 Contributing
+[ci-url]: https://github.com/gulpjs/glob-parent/actions?query=workflow:dev
+[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/glob-parent/dev?style=flat-square
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+[coveralls-url]: https://coveralls.io/r/gulpjs/glob-parent
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/glob-parent/master.svg?style=flat-square
+<!-- prettier-ignore-end -->
 
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 🙏 Acknowledgments
-
-- Icons by Lucide React
-- Charts by Chart.js
-- Maps by Google Maps API
-- Payments by Razorpay
-
-## 📞 Support
-
-For support, email info@feedhope.org or create an issue in the repository.
-
----
-
-**Feed Hope, Not Waste** 🌱❤️
-
+<!-- prettier-ignore-start -->
+[expand-braces]: https://github.com/jonschlinkert/expand-braces
+[expand-brackets]: https://github.com/jonschlinkert/expand-brackets
+<!-- prettier-ignore-end -->
